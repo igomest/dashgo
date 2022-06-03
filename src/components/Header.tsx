@@ -1,4 +1,4 @@
-import { Flex, Icon, Input, HStack, Text, Box, Avatar } from '@chakra-ui/react'
+import { Flex, Icon, Input, HStack, Text, Box, Avatar, Stack } from '@chakra-ui/react'
 import { RiNotificationLine, RiSearchLine, RiUserAddLine } from 'react-icons/ri'
 
 export function Header() {
@@ -51,7 +51,7 @@ export function Header() {
                 align="center"
                 ml="auto"
             >
-                <HStack
+                <Stack
                     mx="8"
                     spacing="4"
                     pr="8"
@@ -62,7 +62,7 @@ export function Header() {
                 >
                     <Icon as={RiNotificationLine} fontSize="20" />
                     <Icon as={RiUserAddLine} fontSize="20" />
-                </HStack>
+                </Stack>
 
                 <Flex align="center" textAlign="right">
                     <Box mr="4" textAlign="right">
