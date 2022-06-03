@@ -51,7 +51,7 @@ export function Header() {
                 align="center"
                 ml="auto"
             >
-                <Stack
+                <HStack
                     mx="8"
                     spacing="4"
                     pr="8"
@@ -62,7 +62,7 @@ export function Header() {
                 >
                     <Icon as={RiNotificationLine} fontSize="20" />
                     <Icon as={RiUserAddLine} fontSize="20" />
-                </Stack>
+                </HStack>
 
                 <Flex align="center" textAlign="right">
                     <Box mr="4" textAlign="right">
