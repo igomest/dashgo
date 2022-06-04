@@ -12,14 +12,14 @@ import { useSidebarDrawer } from "../../contexts/SidebarDrawerContext";
 import { SidebarNav } from "./SidebarNav";
 
 export function Sidebar() {
-  const { isOpen, onClose } = useSidebarDrawer()
+  const { isOpen, onClose,  } = useSidebarDrawer()
 
   const isDrawerSidebar = useBreakpointValue({
-    base: true,
+    base: true, 
     lg: false,
   });
 
-  if (isDrawerSidebar) {
+  if (isDrawerSidebar) { // mostrará o DrawerSidebar apenas se for true, ou seja, o base (responsive)
     return (
       <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
         <DrawerOverlay>
