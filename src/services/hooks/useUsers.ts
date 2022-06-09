@@ -1,17 +1,16 @@
 import { useQuery } from "react-query";
 import { api } from "../api";
 
-
 type User = {
-    id: string;
-    name: string;
-    email: string;
-    createdAt: string;
-}
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+};
 
 export async function getUsers(): Promise<User[]> {
   // Separei a função que faz o fetch de users do hook useUsers,
-  // porque essa função de fazer o fetch, não depende do React Query. 
+  // porque essa função de fazer o fetch, não depende do React Query.
   // Ou seja, se eu precisar utilizar a função em outro lugar sem o React Query, eu poderia reutilizá-la sem problemas.
   const { data } = await api.get("users");
 
