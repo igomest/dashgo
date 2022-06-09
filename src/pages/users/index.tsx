@@ -27,34 +27,37 @@ export default function UserList() {
   // data = os dados que minha requisição vai retornar,
   // isLoading = retorna se minha aplicação está em processo de carregamento ou não
   // error = se minha aplicação está retornando um erro ou não
-  const { data, isLoading, error } = useQuery("users", async () => {
-    const response = await fetch("http://localhost:3002/api/users");
-    const data = await response.json();
+  const { data, isLoading, isFetching, error } = useQuery(
+    "users",
+    async () => {
+      const response = await fetch("http://localhost:3002/api/users");
+      const data = await response.json();
 
-    const users = data.users.map((user) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: new Date(user.createdAt).toLocaleDateString("pt-BR", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        }),
-      };
-    });
+      const users = data.users.map((user) => {
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          createdAt: new Date(user.createdAt).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }),
+        };
+      });
 
-    return users;
-  }, {
-    staleTime: 1000 * 5 // 5 seconds
-  });
+      return users;
+    },
+    {
+      staleTime: 1000 * 5, // 5 seconds
+    }
+  );
 
   const isWideVersion = useBreakpointValue({
     // por padrão, não está na WideVersion
     base: false,
     lg: true,
   });
-
 
   return (
     <Box>
@@ -67,6 +70,9 @@ export default function UserList() {
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
               Usuários
+              {!isLoading && isFetching && (
+                <Spinner size="sm" color="gray.500" ml="4" />
+              )}
             </Heading>
 
             <Link href="/users/create" passHref>
