@@ -11,8 +11,12 @@ interface PaginationProps {
 const siblingsCount = 1;
 
 function generatePagesArray(from: number, to: number) {
+  console.log({from, to})
+  console.log([...new Array(to - from)])
+
   return [...new Array(to - from)]
     .map((_, index) => {
+      console.log(index, from, from + index + 1)
       return from + index + 1;
     })
     .filter((page) => page > 0);
@@ -31,6 +35,8 @@ export function Pagination({
       ? generatePagesArray(currentPage - 1 - siblingsCount, currentPage - 1)
       : [];
 
+      console.log({previousPages})
+
   const nextPages =
     currentPage < lastPage
       ? generatePagesArray(
@@ -38,6 +44,8 @@ export function Pagination({
           Math.min(currentPage + siblingsCount, lastPage)
         )
       : [];
+
+      console.log({nextPages})
 
   return (
     <Stack
@@ -61,6 +69,7 @@ export function Pagination({
             )}
           </>
         )}
+        
 
         {previousPages.length > 0 &&
           previousPages.map((page) => {
