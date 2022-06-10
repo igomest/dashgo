@@ -11,32 +11,37 @@ interface PaginationProps {
 const siblingsCount = 1;
 
 function generatePagesArray(from: number, to: number) {
-  console.log({from, to})
-  console.log([...new Array(to - from)])
+  console.log({ from, to });
+  // console.log([...new Array(to - from)]);
 
   return [...new Array(to - from)]
     .map((_, index) => {
-      console.log(index, from, from + index + 1)
+      console.log(index, from, from + index + 1);
       return from + index + 1;
     })
-    .filter((page) => page > 0);
+    .filter((page) => page > 0); // O filtro acontece, porque se houver um número negativo, pode quebrar o cálculo. Ou seja, ele filtra somente os números maiores que 0.
 }
 
 export function Pagination({
-  totalCountOfRegisters,
+  totalCountOfRegisters, // são 200 registros que estão vindo do mirage/req
   registersPerPage = 10,
   currentPage = 1,
   onPageChange,
 }: PaginationProps) {
-  const lastPage = Math.floor(totalCountOfRegisters / registersPerPage);
+  const lastPage = Math.ceil(totalCountOfRegisters / registersPerPage); // O math arredonda o resultado do totalCountOfRegisters/registersPerPage = 200 / 10, para o caso de vir um valor quebrado de totalCountOfRegisters, não quebrar a paginação.
+  // console.log({ totalCountOfRegisters });
 
-  const previousPages =
+  /* De acordo com a lógica abaixo, as páginas devem ficar assim: 1 ...4 5 6 ... 20   
+     Caso 1: O estado da página começa com 1, logo não haverá uma página anterior, porque o usuário está na primeira página. Então se a página atual for maior que 1, o generatePagesArray vai calcular: a página atual - 1 - a siblingsCount(páginas irmãs) e subtrair a página atual por 1. 
+  */
+
+  const previousPages = // calcular quantas páginas devem ser exibidas, antes da página atual
     currentPage > 1
-      ? generatePagesArray(currentPage - 1 - siblingsCount, currentPage - 1)
-      : [];
+      ? generatePagesArray(currentPage - 1 - siblingsCount, currentPage - 1) // 3 - 1 = 2
+      : [];                                                                  // 2 - 1 = 1 (12[3]4 ... 20)
 
-      console.log({previousPages})
-
+  console.log({ previousPages });
+ 
   const nextPages =
     currentPage < lastPage
       ? generatePagesArray(
@@ -45,7 +50,7 @@ export function Pagination({
         )
       : [];
 
-      console.log({nextPages})
+  // console.log({ nextPages });
 
   return (
     <Stack
@@ -56,7 +61,9 @@ export function Pagination({
       spacing="6"
     >
       <Box>
-        <strong>0</strong> - <strong>10</strong> de <strong>100</strong>
+        {currentPage > 0 && <strong>{currentPage}</strong>} -{" "}
+        {registersPerPage > 0 && <strong>{registersPerPage}</strong>} de{" "}
+        {totalCountOfRegisters > 0 && <strong>{totalCountOfRegisters}</strong>}
       </Box>
       <Stack direction="row" spacing="2">
         {currentPage > 1 + siblingsCount && (
@@ -69,7 +76,6 @@ export function Pagination({
             )}
           </>
         )}
-        
 
         {previousPages.length > 0 &&
           previousPages.map((page) => {
@@ -101,7 +107,7 @@ export function Pagination({
 
         {currentPage + siblingsCount < lastPage && (
           <>
-            {(currentPage + 1 + siblingsCount) < lastPage && (
+            {currentPage + 1 + siblingsCount < lastPage && (
               <Text color="gray.300" w="8" textAlign="center">
                 ...
               </Text>
