@@ -56,7 +56,7 @@ $ npm start
 
 ## 🔖 Demo
 
-Você pode visualizar o layout do projeto através [desse link](https://dashgo-tan-xi.vercel.app). 
+Você pode visualizar o layout do projeto através [desse link](https://dashgo-tan-xi.vercel.app/dashboard). 
 
 #### Imagens
 
