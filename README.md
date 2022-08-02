@@ -11,7 +11,7 @@
  - React Query
  - Context API
  - Miragejs
- - axios
+ - Axios
  
  ## 💻 Projeto
  
