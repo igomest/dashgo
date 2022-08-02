@@ -5,8 +5,6 @@
  ## 🚀 Tecnologias, Hooks e Bibliotecas
  - Nextjs
  - Chakra UI
- - React Hooks
- - React Modal
  - React Hook Form
  - React Query
  - Context API
