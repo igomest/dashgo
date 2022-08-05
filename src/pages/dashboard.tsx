@@ -3,6 +3,9 @@ import dynamic from "next/dynamic";
 import { Header } from "../components/Header";
 import { Sidebar } from "../components/Sidebar";
 import { useAuthContext } from "../contexts/AuthContext";
+import { setupAPIClient } from "../services/api";
+import { withSSRAuth } from "../utils/withSSRAuth";
+import { useCan } from "../services/hooks/useCan"
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -61,6 +64,11 @@ const series = [{ name: "series1", data: [31, 120, 10, 28, 51, 18, 109] }];
 export default function Dashboard() {
   const { user } = useAuthContext()
 
+  const userCanSeeMetrics = useCan({
+    roles: ['administrator', 'editor'],
+    permissions: ['metrics.list']
+  })
+
   return (
     <Flex direction="column" h="100vh">
       <Header />
@@ -72,7 +80,7 @@ export default function Dashboard() {
           <Box p={["6", "8"]} bg="gray.800" borderRadius={8} pb="4">
             <Text fontSize="lg" mb="4">
               {/* Inscritos da semana */}
-              {user?.email}
+              {userCanSeeMetrics && user?.email}
             </Text>
             <Chart options={options} series={series} type="area" height={160} />
           </Box>
@@ -88,3 +96,11 @@ export default function Dashboard() {
     </Flex>
   );
 }
+
+export const getServerSideProps= withSSRAuth(async(ctx) => {
+  const apiClient = setupAPIClient(ctx)
+
+  return {
+    props: {}
+  }
+})
