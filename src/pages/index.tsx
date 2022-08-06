@@ -3,6 +3,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Input } from "../components/Form/Input";
+import { useAuthContext } from "../contexts/AuthContext";
+import { withSSRGuest } from "../utils/withSSRGuest";
 
 type SignInFormData = {
   email: string;
@@ -10,11 +12,16 @@ type SignInFormData = {
 };
 
 const signInFormSchema = yup.object().shape({
-  email: yup.string().required('E-mail obrigatório').email('E-mail inválido'),
-  password: yup.string().required('Senha obrigatória'),
+  email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
+  password: yup
+    .string()
+    .required("Senha obrigatória")
+    .min(6, "A senha deve ter no mínimo 6 caracteres"),
 });
 
 export default function SignIn() {
+  const { signIn } = useAuthContext();
+
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
@@ -22,9 +29,7 @@ export default function SignIn() {
   const { isSubmitting, errors } = formState;
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    console.log(values);
+    await signIn(values);
   };
 
   return (
@@ -70,3 +75,9 @@ export default function SignIn() {
     </Flex>
   );
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  };
+});

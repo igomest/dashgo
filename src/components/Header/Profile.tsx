@@ -1,22 +1,44 @@
-import { Box, Flex, Text, Avatar } from "@chakra-ui/react";
+import {Avatar, Flex, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList} from "@chakra-ui/react";
+import {signOut, useAuthContext} from "../../contexts/AuthContext";
 
-interface ProfileProps {
-  showProfileData?: boolean;
-}
 
-export function Profile({ showProfileData = true }: ProfileProps) {
-  return (
-    <Flex align="center" textAlign="right">
-      {showProfileData && (
-        <Box mr="4" textAlign="right">
-          <Text>Klein Moretti</Text>
-          <Text color="gray.300" fontSize="small">
-            tarotclub@gmail.com
-          </Text>
-        </Box>
-      )}
+export function Profile() {
+    const { user } = useAuthContext()
 
-      <Avatar size="md" name="Klein Moretti" />
-    </Flex>
-  );
+    return (
+        <Flex align="center">
+            <Menu>
+                <MenuButton transition='all 0.2s'>
+                    <Avatar size="md" name={ user?.email } />
+                </MenuButton>
+
+                <MenuList bg="gray.800">
+                    <MenuGroup title='Perfil'>
+                        <MenuItem _hover={{
+                            bg: 'gray.700'
+                        }}>
+                            Minha conta
+                        </MenuItem>
+
+                        <MenuItem _hover={{
+                            bg: 'gray.700'
+                        }}>
+                            Pagamentos
+                        </MenuItem>
+                    </MenuGroup>
+
+                    <MenuDivider/>
+
+                    <MenuItem
+                        _hover={{
+                        bg: 'gray.700'
+                    }}
+                        onClick={signOut}
+                    >
+                        Sign out
+                    </MenuItem>
+                </MenuList>
+            </Menu>
+        </Flex>
+    );
 }
