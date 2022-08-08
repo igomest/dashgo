@@ -9,8 +9,6 @@ import { faker } from "@faker-js/faker";
 
 type User = {
   name: string;
-  email: string;
-  created_at: string;
 };
 
 export function makeServer() {
@@ -25,14 +23,8 @@ export function makeServer() {
 
     factories: {
       user: Factory.extend({
-        name(i: number) {
-          return `User ${i + 1}`;
-        },
-        email() {
-          return faker.internet.email().toLowerCase();
-        },
-        createdAt() {
-          return faker.date.recent(10);
+        name() {
+          return faker.name.findName();
         },
       }),
     },
@@ -64,7 +56,7 @@ export function makeServer() {
       this.post("/users/:id");
 
       this.namespace = "";
-      this.passthrough('http://localhost:3333/**');
+      this.passthrough();
     },
   });
 

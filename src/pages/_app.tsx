@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { QueryClientProvider } from "react-query";
 import { makeServer } from "../services/mirage/index";
 import { queryClient } from "../services/queryClient";
+import { UsersDataProvider } from "../contexts/UsersDataContext";
 
 if (process.env.NODE_ENV === "development") {
   // inicializando miragejs
@@ -16,9 +17,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider resetCSS theme={theme}>
-        <SidebarDrawerProvider>
-          <Component {...pageProps} />
-        </SidebarDrawerProvider>
+        <UsersDataProvider>
+          <SidebarDrawerProvider>
+            <Component {...pageProps} />
+          </SidebarDrawerProvider>
+        </UsersDataProvider>
       </ChakraProvider>
 
       <ReactQueryDevtools />
