@@ -21,6 +21,7 @@ import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
+import { TextArea } from "../../components/Form/Textarea";
 
 interface SendEmailData {
   email: string;
@@ -84,7 +85,7 @@ export default function SendEmail() {
       <Flex my="6" maxWidth={1480} mx="12.5%" w="94%">
         <Sidebar />
 
-        <Box my="8" bg="gray.800" w="900px" h="600px" borderRadius={8} p={10}>
+        <Box my="8" bg="gray.800" w="900px" maxH="auto" borderRadius={8} p={10}>
           <Stack spacing={4}>
             <Heading fontSize="2xl">Enviar e-mail</Heading>
             <Divider />
@@ -108,20 +109,14 @@ export default function SendEmail() {
             </InputGroup>
 
             <Stack>
-              <Text fontSize="sm" fontWeight="bold">
-                Mensagem
-              </Text>
-
-              <Textarea
+              <TextArea
                 label="Mensagem"
-                borderColor="gray.700"
                 size="lg"
-                borderRadius={4}
-                focusBorderColor="pink.500"
                 h="300px"
                 bg="gray.900"
                 resize="none"
                 {...register("message")}
+                error={errors.message}
               />
             </Stack>
           </Stack>
