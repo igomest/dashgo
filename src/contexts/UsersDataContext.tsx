@@ -20,7 +20,6 @@ export interface UsersDataProps {
 }
 
 export interface UsersDataContextData {
-  page: number;
   users: any[];
   ids: string[];
   isChecked: boolean;
@@ -34,8 +33,7 @@ const UsersDataContext = createContext<UsersDataContextData>(
 );
 
 export function UsersDataProvider({ children }: UsersDataProps) {
-  const [page] = useState(1);
-  const { data } = useUsers(page);
+  const { data } = useUsers();
   const [users, setUsers] = useState([]);
   const [ids, setIds] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -58,7 +56,6 @@ export function UsersDataProvider({ children }: UsersDataProps) {
         setIds,
         isChecked,
         setIsChecked,
-        page,
         filteredUsers
       }}
     >

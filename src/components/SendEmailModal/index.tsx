@@ -22,22 +22,53 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiFillCheckCircle, AiOutlineMail } from "react-icons/ai";
 import { useUsersData } from "../../contexts/UsersDataContext";
 import { Input } from "../Form/Input";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-interface User {
-  id: string;
-  name?: string;
-  email?: string;
-  createdAt?: string;
+interface SendEmailData {
+  email: string;
+  message: string;
 }
 
 export function SendEmailModal() {
   const { filteredUsers } = useUsersData();
 
   const userName = filteredUsers?.map((user) => user.name);
+
+  const sendEmailFormSchema = yup.object({
+    email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
+    message: yup.string().required("Insira uma mensagem"),
+  });
+
+  const { register, handleSubmit, formState } = useForm({
+    resolver: yupResolver(sendEmailFormSchema),
+  });
+
+  const { isSubmitting, errors } = formState;
+
+  const handleSendEmail: SubmitHandler<SendEmailData> = async ({
+    email,
+    message,
+  }: SendEmailData) => {
+    const res = await fetch("/api/sendEmail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, message: message }),
+    });
+
+    const apiResponse = await res.json();
+
+    console.log({ apiResponse });
+
+    return apiResponse;
+  };
 
   const OverlayOne = () => (
     <ModalOverlay
@@ -72,7 +103,12 @@ export function SendEmailModal() {
 
       <Modal isCentered isOpen={isOpen} onClose={onClose} size="sm">
         {overlay}
-        <ModalContent bg="gray.900" maxH="auto">
+        <ModalContent
+          bg="gray.900"
+          maxH="auto"
+          as="form"
+          onSubmit={handleSubmit(handleSendEmail)}
+        >
           <ModalHeader>Enviar e-mail</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -114,8 +150,8 @@ export function SendEmailModal() {
                         name="phone"
                         borderRadius={8}
                         placeholder="fulano@email.com"
-                        // {...register("phone")}
-                        // error={errors.phone}
+                        {...register("email")}
+                        error={errors.email}
                         variant="filled"
                       />
                     </InputGroup>
@@ -133,6 +169,7 @@ export function SendEmailModal() {
                         bg="gray.800"
                         size="sm"
                         borderRadius={4}
+                        {...register("message")}
                       />
                     </Stack>
                   </Box>
@@ -163,8 +200,8 @@ export function SendEmailModal() {
                         name="phone"
                         borderRadius={8}
                         placeholder="fulano@email.com"
-                        // {...register("phone")}
-                        // error={errors.phone}
+                        {...register("email")}
+                        error={errors.email}
                         variant="filled"
                       />
                     </InputGroup>
@@ -183,6 +220,7 @@ export function SendEmailModal() {
                         size="sm"
                         borderRadius={4}
                         variant="unstyled"
+                        {...register("message")}
                       />
                     </Stack>
                   </Box>
@@ -192,7 +230,13 @@ export function SendEmailModal() {
           </ModalBody>
           <ModalFooter>
             <HStack spacing={2}>
-              <Button onClick={onClose} colorScheme="pink" size="md">
+              <Button
+                onClick={onClose}
+                colorScheme="pink"
+                size="md"
+                type="submit"
+                isLoading={isSubmitting}
+              >
                 Enviar
               </Button>
 

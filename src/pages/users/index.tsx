@@ -26,7 +26,6 @@ import { Sidebar } from "../../components/Sidebar";
 import { RiAddLine } from "react-icons/ri";
 import { CgNotes } from "react-icons/cg";
 
-import { Pagination } from "../../components/Pagination";
 
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
@@ -36,8 +35,8 @@ import { useUsersData } from "../../contexts/UsersDataContext";
 import { SendEmailModal } from "../../components/SendEmailModal";
 
 export default function UserList() {
-  const { users, ids, setIds, isChecked, setIsChecked, page } = useUsersData();
-  const { isLoading, isFetching, error } = useUsers(page);
+  const { users, ids, setIds, isChecked, setIsChecked } = useUsersData();
+  const { isLoading, isFetching, error } = useUsers();
 
   function selectUser(e) {
     const selectedId = e.target.value;

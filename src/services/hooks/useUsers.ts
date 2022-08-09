@@ -7,21 +7,14 @@ type User = {
 };
 
 type GetUsersResponse = {
-  totalCount: number;
   users: User[];
 };
 
-export async function getUsers(page: number): Promise<GetUsersResponse> {
+export async function getUsers(): Promise<GetUsersResponse> {
   // Separei a função que faz o fetch de users do hook useUsers,
   // porque essa função de fazer o fetch, não depende do React Query.
   // Ou seja, se eu precisar utilizar a função em outro lugar sem o React Query, eu poderia reutilizá-la sem problemas.
-  const { data, headers } = await api.get("users", {
-    params: {
-      page,
-    },
-  });
-
-  const totalCount = Number(headers["x-total-count"]);
+  const { data } = await api.get("users");
 
   const users = data.users.map((user) => {
     return {
@@ -32,12 +25,11 @@ export async function getUsers(page: number): Promise<GetUsersResponse> {
 
   return {
     users,
-    totalCount,
   };
 }
 
-export function useUsers(page: number) {
-  return useQuery(["users", page], () => getUsers(page), {
+export function useUsers() {
+  return useQuery(["users"], () => getUsers(), {
     staleTime: 1000 * 60 * 10,  // 10 minutes
   });
 }
