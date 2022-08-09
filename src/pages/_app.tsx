@@ -8,10 +8,10 @@ import { makeServer } from "../services/mirage/index";
 import { queryClient } from "../services/queryClient";
 import { UsersDataProvider } from "../contexts/UsersDataContext";
 
-if (process.env.NODE_ENV === "development") {
-  // inicializando miragejs
-  makeServer();
-}
+// if (process.env.NODE_ENV === "development") {
+//   // inicializando miragejs
+// }
+makeServer();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
