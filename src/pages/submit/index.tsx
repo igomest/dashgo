@@ -60,7 +60,7 @@ export default function SendEmail() {
       toast({
         position: "top",
         title: "E-mail enviado",
-        description: "O e-mail foi enviado com sucesso!.",
+        description: "O e-mail foi enviado com sucesso!",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -68,7 +68,7 @@ export default function SendEmail() {
     } else {
       toast({
         position: "top",
-        title: "Ocorreu um erro",
+        title: "E-mail não enviado",
         description:
           "Ocorreu um erro ao enviar o e-mail, tente novamente mais tarde.",
         status: "error",
