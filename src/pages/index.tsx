@@ -40,6 +40,7 @@ export default function SignIn() {
         borderRadius={8}
         flexDir="column"
         onSubmit={handleSubmit(handleSignIn)}
+        noValidate
       >
         <Stack spacing="4">
           <Input
