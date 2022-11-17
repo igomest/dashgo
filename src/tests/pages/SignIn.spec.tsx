@@ -1,12 +1,18 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { AuthProvider } from "contexts/AuthContext";
 import { useRouter } from "next/router";
 import SignIn from "../../pages/index";
 
 jest.mock('next/router')
+jest.mock('broadcast-channel')
 
 describe("SignIn page", () => {
   beforeEach(() => {
-    render(<SignIn />);
+    render(
+      <AuthProvider>
+        <SignIn />
+      </AuthProvider>
+    );
   });
 
   it("should display matching error when email is invalid", async () => {

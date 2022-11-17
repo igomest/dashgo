@@ -13,6 +13,7 @@ import { useToast } from "@chakra-ui/react";
 
 import { api } from "services/apiClient";
 import { queryClient } from "services/queryClient";
+import { BroadcastChannel } from "broadcast-channel"
 
 export const AuthContext = createContext({} as AuthContextData);
 
