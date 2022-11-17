@@ -7,21 +7,24 @@ import { QueryClientProvider } from "react-query";
 import { makeServer } from "../services/mirage/index";
 import { queryClient } from "../services/queryClient";
 import { UsersDataProvider } from "../contexts/UsersDataContext";
+import { AuthProvider } from "contexts/AuthContext";
 
 // if (process.env.NODE_ENV === "development") {
 //   // inicializando miragejs
 // }
-makeServer();
+// makeServer();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider resetCSS theme={theme}>
-        <UsersDataProvider>
-          <SidebarDrawerProvider>
-            <Component {...pageProps} />
-          </SidebarDrawerProvider>
-        </UsersDataProvider>
+        <AuthProvider>
+          <UsersDataProvider>
+            <SidebarDrawerProvider>
+              <Component {...pageProps} />
+            </SidebarDrawerProvider>
+          </UsersDataProvider>
+        </AuthProvider>
       </ChakraProvider>
 
       <ReactQueryDevtools />

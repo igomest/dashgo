@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Input } from "../components/Form/Input";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { withSSRGuest } from "services/auth/withSSRGuest";
+import { useAuth } from "contexts/AuthContext";
 
 type SignInFormData = {
   email: string;
@@ -17,17 +19,18 @@ const signInFormSchema = yup.object().shape({
 });
 
 export default function SignIn() {
+  const { signIn } = useAuth();
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(signInFormSchema),
   });
 
-  const router = useRouter()
-
   const { isSubmitting, errors } = formState;
 
-  const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-    console.log(values);
-    router.push('/dashboard')
+  const handleSignIn: SubmitHandler<SignInFormData> = async ({
+    email,
+    password,
+  }) => {
+    await signIn({ email, password });
   };
 
   return (
@@ -74,3 +77,9 @@ export default function SignIn() {
     </Flex>
   );
 }
+
+export const getServerSideProps = withSSRGuest(async () => {
+  return {
+    props: {},
+  };
+});

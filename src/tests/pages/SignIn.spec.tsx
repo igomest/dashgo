@@ -2,6 +2,8 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { useRouter } from "next/router";
 import SignIn from "../../pages/index";
 
+jest.mock('next/router')
+
 describe("SignIn page", () => {
   beforeEach(() => {
     render(<SignIn />);
