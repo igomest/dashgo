@@ -21,6 +21,15 @@ const mock = new MockAdapter(api);
 
 describe("SignIn page", () => {
   beforeEach(() => {
+    mock.onGet('/collaborators/user-by-token').reply(200, {
+      user: {
+        id: 'fake-id',
+        email: 'fake@email.com',
+        name: 'John Doe',
+        isAdmin: false
+      }
+    })
+
     render(
       <AuthProvider>
         <SignIn />
@@ -123,9 +132,9 @@ describe("SignIn page", () => {
       name: 'Entrar'
     })
 
-    act(() => {
-      fireEvent.click(logIn)
-    })
+  
+    fireEvent.click(logIn)
+  
 
     expect(screen.getByRole<HTMLInputElement>('textbox').value).toBe(
       'test@email.com'
@@ -134,9 +143,9 @@ describe("SignIn page", () => {
     expect(screen.getByLabelText<HTMLInputElement>('Senha').value).toBe(
       'password'
     )
-
-    const listitem = screen.getByRole('listitem')
-
-    await waitFor(() => expect(within(listitem).getByRole('alert')))
+   
+    await waitFor(() =>
+      expect(within(screen.getByRole('listitem')).getByRole('alert'))
+    )
   })
 });
