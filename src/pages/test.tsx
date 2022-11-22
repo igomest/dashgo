@@ -24,7 +24,7 @@ interface FormValues {
 }
 
 export default function Test() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   const { register, formState, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -63,7 +63,7 @@ export default function Test() {
             </Button>
 
             <Flex direction="column" mt="5">
-              {fields[1] && <Flex bg="gray.400">Teste 1</Flex>}
+              {fields[1] && <Flex bg="gray.400" onClick={onToggle}>Teste 1</Flex>}
               <Collapse in={fields[1] ? !isOpen : isOpen} animateOpacity>
                 <Stack>
                   <input name="name" type="text" placeholder="Nome" />
