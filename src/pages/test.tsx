@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Modal,
@@ -25,6 +25,7 @@ interface FormValues {
 
 export default function Test() {
   const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
+  const [openCard, setOpenCard] = useState(null);
 
   const { register, formState, control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -38,6 +39,12 @@ export default function Test() {
   });
 
   const onSubmit = (data: FormValues) => console.log(data);
+
+  const userAction = (id) => {
+    setOpenCard((prev) => {
+      return prev === id ? null : id;
+    });
+  };
 
   return (
     <>
@@ -62,32 +69,21 @@ export default function Test() {
               +
             </Button>
 
-            <Flex direction="column" mt="5">
-              {fields[1] && <Flex bg="gray.400" onClick={onToggle}>Teste 1</Flex>}
-              <Collapse in={fields[1] ? !isOpen : isOpen} animateOpacity>
-                <Stack>
-                  <input name="name" type="text" placeholder="Nome" />
-                  <input name="email" type="e-mail" placeholder="E-mail" />
-                </Stack>
-              </Collapse>
-              
-              {fields[2] && <Flex bg="gray.400">Teste 2</Flex>}
-              {fields[1] && (
-                <Collapse in={fields[2] ? !isOpen : isOpen} animateOpacity>
+            {fields.map((field, index) => (
+              <Flex key={field.id} p={4} bg="gray.400" mt="8px">
+                <Collapse
+                  in={fields.length < 2 ? true : openCard === field.id}
+                  animateOpacity
+                >
                   <Stack>
                     <input name="name" type="text" placeholder="Nome" />
                     <input name="email" type="e-mail" placeholder="E-mail" />
                   </Stack>
                 </Collapse>
-              )}
 
-              <Collapse in={fields[2] && isOpen} animateOpacity>
-                <Stack>
-                  <input name="name" type="text" placeholder="Nome" />
-                  <input name="email" type="e-mail" placeholder="E-mail" />
-                </Stack>
-              </Collapse>
-            </Flex>
+                <Button onClick={() => userAction(field.id)}>Abrir</Button>
+              </Flex>
+            ))}
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClose}>Close</Button>
